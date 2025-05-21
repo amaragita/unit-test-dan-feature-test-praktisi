@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CalculatorHelper;
+use App\Helpers\PrimeNumberHelper;
 use Illuminate\Http\Request;
 
 class CalculatorController extends Controller
@@ -22,9 +23,19 @@ class CalculatorController extends Controller
         ]);
 
         // Mengambil data
-        $a = $request->input('a');
-        $b = $request->input('b');
+        $a = (int) $request->input('a');
+        $b = (int) $request->input('b');
         $operation = $request->input('operation');
+
+        // Validasi bilangan prima
+        if (!PrimeNumberHelper::validatePrimeNumbers($a, $b)) {
+            return back()
+                ->withErrors([
+                    'a' => !PrimeNumberHelper::isPrime($a) ? 'Angka pertama harus berupa bilangan prima.' : null,
+                    'b' => !PrimeNumberHelper::isPrime($b) ? 'Angka kedua harus berupa bilangan prima.' : null,
+                ])
+                ->withInput();
+        }
 
         // Menghitung data
         $result = $operation === 'add'
