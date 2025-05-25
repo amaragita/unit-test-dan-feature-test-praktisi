@@ -4,12 +4,11 @@ use App\Http\Controllers\CalculatorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LoanCalculatorController;
+use App\Http\Controllers\DiscountController;
 use App\Models\Task;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [DiscountController::class, 'index']);
 
 Route::get('/dashboard', [DashboardController::class, 'view'])->name('dashboard');
 
@@ -23,3 +22,7 @@ Route::post('/calculator', [CalculatorController::class, 'calculate']);
 // Loan
 Route::get('/loan', [LoanCalculatorController::class, 'index']);
 Route::post('/loan', [LoanCalculatorController::class, 'calculate']);
+
+// Discount
+Route::get('/discount', [App\Http\Controllers\DiscountController::class, 'index'])->name('discount.index');
+Route::post('/discount/calculate', [App\Http\Controllers\DiscountController::class, 'calculate'])->name('discount.calculate');
